@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $telephone = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+
     private ?\DateTimeInterface $birth_date = null;
 
     public function getId(): ?int

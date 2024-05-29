@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Admin User
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <h1> Admin your users </h1>
+        <div>
+            <a href="{{ path('admin.user.create') }}">Create New User</a>
+        </div>
+        <div>
+            {% for user in users %}
+                <hr>
+                <div class="card">
+                    <p>{{ user.firstName }}</p>
+                    <p>{{ user.email }}</p>
+                    <a href="{{ path('admin.user.update', {id: user.id}) }}" >Update</a>
+                    <button>Delete</button>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endblock %}
