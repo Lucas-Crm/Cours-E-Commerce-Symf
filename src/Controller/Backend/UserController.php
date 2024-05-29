@@ -68,27 +68,4 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
-    public function create(UserPasswordHasherInterface $hasher): Response
-    {
-
-        $user = new User();
-        $form = $this->createForm(UserType::class);
-
-        if($form->isSubmitted() && $form->isValid()){
-
-            $user = (new User())
-                ->setPassword($hasher->hashPassword($user, $form->get('lastName')->getData()));
-
-            $this->em->persist($user);
-            $this->em->flush();
-            //TODO redirect et flash
-        }
-
-        return $this->render('backend/user/create.html.twig', [
-            'form'=>$form
-        ]);
-
-    }
-
 }
