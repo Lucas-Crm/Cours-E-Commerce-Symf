@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Gender;
+use App\Entity\Model;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -58,6 +59,15 @@ class AppFixtures extends Fixture
         }
 
 
+        //Fixture Model
+        for($i = 0; $i < 5; $i++){
+            $model = (new Model)
+                ->setName('model'.$i)
+                ->setEnable(true)
+                ;
+
+            $manager->persist($model);
+        }
 
         $manager->flush();
     }

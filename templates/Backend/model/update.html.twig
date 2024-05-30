@@ -1,0 +1,23 @@
+{%extends 'base.html.twig' %}
+
+{% block title %}
+    Update Model
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <div>
+            <h1>Update Model</h1>
+        </div>
+        <div class="form-group">
+            {{ form_start(form) }}
+
+            <input class="btn btn-secondary" type="submit" value="Update">
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}

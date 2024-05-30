@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Create Model
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <div>
+            <h1>Create model</h1>
+            <a class="btn btn-primary" href="{{ path('admin.model.index') }}">Retour a la liste des models</a>
+        </div>
+        <div>
+            {{ form_start(form) }}
+            <input type="submit" value="Create" class="btn btn-secondary">
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}
