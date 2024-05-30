@@ -7,6 +7,7 @@ use App\Entity\Traits\EnableTrait;
 use App\Repository\MarqueRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MarqueRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -20,6 +21,10 @@ class Marque
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        max: 255
+    )]
+    #[Assert\NotBlank()]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -27,9 +32,15 @@ class Marque
     private ?string $slug = null;
 
     #[ORM\Column(length: 10000, nullable: true)]
+    #[Assert\Length(
+        max: 10000
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255
+    )]
     private ?string $image_name = null;
 
     public function getId(): ?int
