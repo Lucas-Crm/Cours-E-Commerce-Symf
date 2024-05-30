@@ -1,0 +1,22 @@
+.btn{
+    background-color: #f00;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+    &:hover{
+        background-color: $black;
+    }
+    &.btn-primary{
+        background-color: $color-primary;
+        color: $black;
+    }
+    &.btn-secondary{
+        background-color: $color-secondary;
+    }
+    &.btn-danger{
+        background-color: red;
+    }
+}
