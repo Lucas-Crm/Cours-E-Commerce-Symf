@@ -33,29 +33,19 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout',name: 'app.logout')]
-    public function logout(): Response {
-        return $this->redirect('/login');
-    }
-
     #[Route('/register', name: '.register', methods: ['GET', 'POST'])]
     public function register(UserPasswordHasherInterface $hasher, Request $request): Response
     {
 
         $user = new User();
-        $form = $this->createForm(UserType::class, null, [
+        $form = $this->createForm(UserType::class, $user, [
             'isRegister' => true
         ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 
-            $user = (new User())
-                ->setEmail($form->get('email')->getData())
-                ->setFirstName($form->get('firstName')->getData())
-                ->setLastName($form->get('lastName')->getData())
-                ->setBirthDate($form->get('birthDate')->getData())
-                ->setTelephone($form->get('telephone')->getData())
+            $user
                 ->setPassword($hasher->hashPassword($user, $form->get('password')->getData()));
 
             $this->em->persist($user);
