@@ -43,7 +43,9 @@ class SecurityController extends AbstractController
     {
 
         $user = new User();
-        $form = $this->createForm(UserType::class);
+        $form = $this->createForm(UserType::class, null, [
+            'isRegister' => true
+        ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){

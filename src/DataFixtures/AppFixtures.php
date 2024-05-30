@@ -41,6 +41,7 @@ class AppFixtures extends Fixture
                 ->setPassword($this->hasher->hashPassword($user, 'Test1234!'))
                 ->setFirstName('user' . $i)
                 ->setLastName('test')
+                ->setRoles(["ROLE_USER"])
                 ;
 
             $manager->persist($user);

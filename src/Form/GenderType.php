@@ -22,9 +22,6 @@ class GenderType extends AbstractType
             ])
             ->add('enable', CheckboxType::class, [
                 'label'=>'Activer le gender',
-                'attr'=>[
-                    'class'=>''
-                ],
                 'required'=> false
             ])
         ;
