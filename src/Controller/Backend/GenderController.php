@@ -60,4 +60,51 @@ class GenderController extends AbstractController
     ]);
 
     }
+
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?Gender $gender, Request $request): RedirectResponse
+    {
+        if(!$gender){
+            $this->addFlash('error', 'Aucun gender n\'as ete trouver');
+
+            return $this->redirectToRoute('admin.gender.index');
+        }
+
+        if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->get('token'))){
+        $this->em->remove($gender);
+        $this->em->flush();
+
+        $this->addFlash('success', 'Le gender a bien ete supprimer');
+
+        }
+        return $this->redirectToRoute('admin.gender.index');
+    }
+
+    #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
+    public function create(Request $request): RedirectResponse | Response
+    {
+
+        $gender = new Gender();
+
+        $form = $this->createForm(GenderType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $gender
+                ->setName($form->get('name')->getData())
+                ->setEnable($form->get('enable')->getData());
+            $this->em->persist($gender);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Le gender a bien ete cree');
+
+            return $this->redirectToRoute('admin.gender.index');
+        }
+
+        return $this->render('backend/gender/create.html.twig', [
+            'form'=>$form
+        ]);
+
+    }
 }

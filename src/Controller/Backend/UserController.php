@@ -68,7 +68,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
-    public function delete(?User $user): RedirectResponse
+    public function delete(?User $user, Request $request): RedirectResponse
     {
         if(!$user){
             $this->addFlash('error', 'No user was found');
@@ -76,10 +76,13 @@ class UserController extends AbstractController
             $this->redirectToRoute('admin.user.index');
         }
 
+        if($this->isCsrfTokenValid('delete'.$user->getId(), $request->get('token'))){
         $this->em->remove($user);
         $this->em->flush();
-
         $this->addFlash('success', 'The user was been deleted');
+
+        }
+
 
         return $this->redirectToRoute('admin.user.index');
     }

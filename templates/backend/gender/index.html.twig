@@ -9,7 +9,7 @@
 <section>
     <h1>Admin des genders</h1>
     <div>
-        <a href="#">Create new gender</a>
+        <a href="{{ path('admin.gender.create') }}">Create new gender</a>
     </div>
     <div>
         {% for gender in genders %}
@@ -19,7 +19,7 @@
                 <p>{{ gender.enable ? 'Actif' : 'Pas actif' }}</p>
 
                 <a href="{{ path('admin.gender.update', {id: gender.id}) }}">Update</a>
-                <a href="#">Delete</a>
+                {{ include('backend/gender/_delete.html.twig') }}
             </div>
 
             <hr>
