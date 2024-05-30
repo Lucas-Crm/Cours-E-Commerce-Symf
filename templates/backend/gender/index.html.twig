@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Genders
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<section>
+    <h1>Admin des genders</h1>
+    <div>
+        <a href="#">Create new gender</a>
+    </div>
+    <div>
+        {% for gender in genders %}
+            <div>
+                <h2>{{ gender.name }}</h2>
+
+                <p>{{ gender.enable ? 'Actif' : 'Pas actif' }}</p>
+
+                <a href="{{ path('admin.gender.update', {id: gender.id}) }}">Update</a>
+                <a href="#">Delete</a>
+            </div>
+
+            <hr>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
