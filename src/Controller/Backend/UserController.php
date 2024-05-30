@@ -35,7 +35,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-    public function update(?User $user, Request $request): RedirectResponse |Response
+    public function update(?User $user, Request $request): RedirectResponse | Response
     {
 
         if(!$user){
@@ -67,5 +67,21 @@ class UserController extends AbstractController
 
     }
 
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?User $user): RedirectResponse
+    {
+        if(!$user){
+            $this->addFlash('error', 'No user was found');
+
+            $this->redirectToRoute('admin.user.index');
+        }
+
+        $this->em->remove($user);
+        $this->em->flush();
+
+        $this->addFlash('success', 'The user was been deleted');
+
+        return $this->redirectToRoute('admin.user.index');
+    }
 
 }
