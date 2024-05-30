@@ -6,20 +6,21 @@
 {% endblock %}
 
 {% block body %}
-<section>
+<section class="container">
     <h1>Admin des genders</h1>
     <div>
-        <a href="{{ path('admin.gender.create') }}">Create new gender</a>
+        <a class="btn btn-primary" href="{{ path('admin.gender.create') }}">Create new gender</a>
     </div>
-    <div>
+    <div class="d-flex flex-wrap-wrap">
         {% for gender in genders %}
-            <div>
+            <div class="card">
                 <h2>{{ gender.name }}</h2>
 
                 <p>{{ gender.enable ? 'Actif' : 'Pas actif' }}</p>
-
-                <a href="{{ path('admin.gender.update', {id: gender.id}) }}">Update</a>
+                <div class="flex-wrap-wrap">
+                <a class="btn-secondary btn" href="{{ path('admin.gender.update', {id: gender.id}) }}">Update</a>
                 {{ include('backend/gender/_delete.html.twig') }}
+                </div>
             </div>
 
             <hr>

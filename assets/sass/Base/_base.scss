@@ -1,0 +1,23 @@
+body, html {
+  scroll-behavior: smooth;
+}
+html {
+  position: relative;
+  // Imbrication
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5%;
+    right: 5%;
+    border-radius: $border-radius; // Utilisation des variables
+    box-shadow: $box-shadow-default; // Utilisation des variables
+    pointer-events: none;
+
+    body {
+      background: $primary; // Utilisation de map-get pour récupérer la couleur
+      color: $text-color;
+    }
+  }
+}

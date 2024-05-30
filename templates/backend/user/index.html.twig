@@ -8,15 +8,17 @@
 {% block body %}
 
     <section class="container">
-        <h1> Admin your users </h1>
-        <div>
+        <h1> Admin users </h1>
+        <div class="d-flex flex-wrap-wrap">
             {% for user in users %}
                 <hr>
                 <div class="card">
                     <p>{{ user.firstName }}</p>
                     <p>{{ user.email }}</p>
-                    <a href="{{ path('admin.user.update', {id: user.id}) }}" >Update</a>
+                    <div class="d-flex">
+                    <a class="btn btn-secondary " href="{{ path('admin.user.update', {id: user.id}) }}" >Update</a>
                     {{ include('backend/user/_delete.html.twig') }}
+                    </div>
                 </div>
             {% endfor %}
         </div>
