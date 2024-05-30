@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Gender;
+use App\Entity\Marque;
 use App\Entity\Model;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -67,6 +68,17 @@ class AppFixtures extends Fixture
                 ;
 
             $manager->persist($model);
+        }
+
+
+        //fixture Marque
+        for($i =0; $i < 5; $i++){
+            $marque= (new Marque)
+                ->setName('marque' . $i)
+                ->setEnable(true);
+
+            $manager->persist($marque);
+
         }
 
         $manager->flush();

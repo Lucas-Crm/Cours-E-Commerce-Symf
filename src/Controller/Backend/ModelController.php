@@ -61,7 +61,7 @@ class ModelController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
-    public function delete(?Model $model, Request $request)
+    public function delete(?Model $model, Request $request): RedirectResponse
     {
         if(!$model){
             $this->addFlash('error', 'Aucun model trouver');
