@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Gender;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -21,6 +22,8 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
+
+        // Fixture Users
         $user = new User();
         $user->setEmail('rb@admin.fr')
             ->setPassword($this->hasher->hashPassword($user, 'rmrf1234!'))
@@ -42,6 +45,18 @@ class AppFixtures extends Fixture
 
             $manager->persist($user);
         };
+
+
+        //Fixture Gender
+        for($i = 0; $i < 3; $i++){
+            $gender = (new Gender)
+                ->setName('gender' . $i)
+                ->setEnable(true);
+
+            $manager->persist($gender);
+        }
+
+
 
         $manager->flush();
     }
