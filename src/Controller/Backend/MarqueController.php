@@ -70,14 +70,16 @@ class MarqueController extends AbstractController
 
 
         if($this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
-            $this->em->remove($marque);
-            $this->em->flush();
+            try {
+                $this->em->remove($marque);
+                $this->em->flush();
 
-            $this->addFlash('success', 'Une marque a ete supprimer');
-
-            return $this->redirectToRoute('admin.marque.index');
-        } else if (!$this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
-            $this->addFlash('error', 'Le token csrf n\as pas ete valide');
+                $this->addFlash('success', 'La marque a bien été supprimée');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Cette marque est liée à des produits et ne peut pas être supprimée');
+            }
+        } elseif (!$this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
+            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
         }
 
             return $this->redirectToRoute('admin.marque.index');

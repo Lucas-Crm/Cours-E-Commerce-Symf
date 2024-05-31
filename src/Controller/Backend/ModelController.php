@@ -69,10 +69,15 @@ class ModelController extends AbstractController
         }
 
         if($this->isCsrfTokenValid('delete'.$model->getId(), $request->get('token'))){
+           try{
+
             $this->em->remove($model);
             $this->em->flush();
 
             $this->addFlash('success', 'Le model a bien ete supprimer');
+           } catch (\Exception $e) {
+            $this->addFlash('success', 'Ce model est liee a un ou plusieur produit et ne peut pas etre supprimer');
+           }
         }
 
         return $this->redirectToRoute('admin.model.index');

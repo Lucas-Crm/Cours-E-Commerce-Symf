@@ -13,6 +13,16 @@
         {{ form_start(form) }}
             <input type="submit" value="Update" class="btn btn-secondary">
         {{ form_end(form) }}
+
+        <hr>
+
+            <h2>Produit liee a cette delivery :</h2>
+        <div>
+            {% for product in products %}
+                <p>{{ product.name }}</p>
+                <hr>
+            {% endfor %}
+        </div>
     </section>
 
 {% endblock %}

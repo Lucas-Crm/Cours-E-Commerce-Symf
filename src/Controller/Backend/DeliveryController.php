@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Delivery;
 use App\Form\DeliveryType;
 use App\Repository\DeliveryRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,8 +33,10 @@ class DeliveryController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-    public function update(?Delivery $delivery, Request $request)
+    public function update(?Delivery $delivery, Request $request, ProductRepository $productRepos)
     {
+
+        $products = $productRepos->findBy(['delivery' => $delivery->getId()]);
 
         if(!$delivery){
             $this->addFlash('error', 'Aucun delivery trouver');
@@ -53,7 +56,8 @@ class DeliveryController extends AbstractController
         }
 
         return $this->render('Backend/delivery/update.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'products' => $products
         ]);
     }
 
@@ -67,8 +71,16 @@ class DeliveryController extends AbstractController
     }
 
     if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
-        $this->em->remove($delivery);
-        $this->em->flush();
+
+        try {
+            $this->em->remove($delivery);
+            $this->em->flush();
+
+            $this->addFlash('success', 'La delivery a bien ete supprimer');
+        } catch (\Exception $e){
+            $this->addFlash('success', 'Cette Delivery est liee a un ou plusieur produits et ne peut donc pas etre supprimer');
+        }
+
     } elseif (!$this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
         $this->addFlash('error', 'Mauvais token CSRF');
     }

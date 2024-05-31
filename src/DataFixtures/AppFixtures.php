@@ -34,7 +34,6 @@ class AppFixtures extends Fixture
             ->setFirstName('Robert')
             ->setLastName('Mitchoum')
             ->setTelephone('0123456789');
-        // TODO Mettre la date de naissance
 
         $manager->persist($user);
 
@@ -52,42 +51,42 @@ class AppFixtures extends Fixture
 
 
         //Fixture Gender
-        for($i = 0; $i < 3; $i++){
+        $genderName = ['Homme','Femme','Enfant'];
+        foreach ($genderName as $name){
             $gender = (new Gender)
-                ->setName('gender' . $i)
+                ->setName($name)
                 ->setEnable(true);
-
             $manager->persist($gender);
         }
 
-
         //Fixture Model
-        for($i = 0; $i < 5; $i++){
+        $modelName = ['Chaussure', 'Sandale'];
+        foreach ($modelName as $name){
             $model = (new Model)
-                ->setName('model'.$i)
+                ->setName($name)
                 ->setEnable(true)
                 ;
-
             $manager->persist($model);
         }
 
-
         //Fixture Marque
-        for($i =0; $i < 5; $i++){
-            $marque= (new Marque)
-                ->setName('marque' . $i)
+        $marquesName = ['Nike', 'Adidas', 'New Balance', 'Levis'];
+        foreach ($marquesName as $name){
+            $marque = (new Marque)
+                ->setName($name)
                 ->setEnable(true);
 
             $manager->persist($marque);
-
         }
 
 
+
         //Fixture Delivery
-        for ($i = 0; $i < 5; $i++){
+        $deliveryName = ['5 - 1O jours ouvree', ' 1 jour Express', '3 jour ouvree'];
+        foreach ($deliveryName as $name){
             $delivery = (new Delivery)
-                ->setName('delivery-' . $i)
-                ->setDescription('Description de delivery-' . $i)
+                ->setName($name)
+                ->setDescription('Description ' . $name)
                 ->setPrice(10 + $i)
                 ->setEnable(true);
 

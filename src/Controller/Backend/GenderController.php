@@ -71,10 +71,14 @@ class GenderController extends AbstractController
         }
 
         if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->get('token'))){
-        $this->em->remove($gender);
-        $this->em->flush();
+            try {
+                $this->em->remove($gender);
+                $this->em->flush();
 
-        $this->addFlash('success', 'Le gender a bien ete supprimer');
+                $this->addFlash('success', 'Le gender a bien ete supprimer');
+            } catch (\Exception $e){
+                $this->addFlash('success', 'Ce gender est liee a un ou plusieur product et ne peut donc pas etre supprimer');
+            }
 
         }
         return $this->redirectToRoute('admin.gender.index');
