@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Create Delivery
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <div>
+            <h1>Create Delivery</h1>
+        </div>
+        <div class="d-flex">
+            {{ form_start(form) }}
+                <input class="btn btn-secondary" type="submit" value="Create">
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}

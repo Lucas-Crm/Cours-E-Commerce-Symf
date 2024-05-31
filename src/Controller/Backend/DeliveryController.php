@@ -32,7 +32,7 @@ class DeliveryController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-    public function update(Delivery $delivery, Request $request)
+    public function update(?Delivery $delivery, Request $request)
     {
 
         if(!$delivery){
@@ -55,5 +55,48 @@ class DeliveryController extends AbstractController
         return $this->render('Backend/delivery/update.html.twig', [
             'form' => $form
         ]);
+    }
+
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?Delivery $delivery, Request $request){
+
+    if(!$delivery){
+        $this->addFlash('error', 'Aucune Delivery trouver');
+
+        return $this->redirectToRoute('admin.delivery.index');
+    }
+
+    if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
+        $this->em->remove($delivery);
+        $this->em->flush();
+    } elseif (!$this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
+        $this->addFlash('error', 'Mauvais token CSRF');
+    }
+
+    return $this->redirectToRoute('admin.delivery.index');
+
+    }
+
+    #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
+    public function create(Request $request)
+    {
+
+        $delivery = new Delivery();
+        $form = $this->createForm(DeliveryType::class, $delivery);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->em->persist($delivery);
+            $this->em->flush();
+
+            $this->addFlash('success', 'La Delivery a bien ete cree');
+
+            return $this->redirectToRoute('admin.delivery.index');
+        }
+
+        return $this->render('Backend/delivery/create.html.twig', [
+            'form' => $form
+        ]);
+
     }
 }
