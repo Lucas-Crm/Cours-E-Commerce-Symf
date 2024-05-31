@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Delivery;
 use App\Entity\Gender;
 use App\Entity\Marque;
 use App\Entity\Model;
@@ -71,13 +72,26 @@ class AppFixtures extends Fixture
         }
 
 
-        //fixture Marque
+        //Fixture Marque
         for($i =0; $i < 5; $i++){
             $marque= (new Marque)
                 ->setName('marque' . $i)
                 ->setEnable(true);
 
             $manager->persist($marque);
+
+        }
+
+
+        //Fixture Delivery
+        for ($i = 0; $i < 5; $i++){
+            $delivery = (new Delivery)
+                ->setName('delivery-' . $i)
+                ->setDescription('Description de delivery-' . $i)
+                ->setPrice(10 + $i)
+                ->setEnable(true);
+
+            $manager->persist($delivery);
 
         }
 
