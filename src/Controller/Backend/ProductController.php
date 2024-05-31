@@ -64,10 +64,11 @@ class ProductController extends AbstractController
     public function create(Request $request): Response | RedirectResponse
     {
         $product = new Product();
-        $form = $this->createForm(ProductType::class);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
             $this->em->persist($product);
             $this->em->flush();
 
@@ -82,6 +83,27 @@ class ProductController extends AbstractController
 
     }
 
-//    TODO : Faire le delete
+    #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
+    public function delete(?Product $product, Request $request){
+
+        if(!$product){
+            $this->addFlash('error', 'Aucun produit trouver');
+            return $this->redirectToRoute('admin.product.index');
+        }
+
+        if($this->isCsrfTokenValid('delete'. $product->getId(), $request->get('token'))){
+            $this->em->remove($product);
+            $this->em->flush();
+
+            $this->addFlash('success', 'le produit a bien ete supprimer');
+
+
+        } elseif (!$this->isCsrfTokenValid('delete'. $product->getId(), $request->get('token'))){
+            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
+        }
+
+            return $this->redirectToRoute('admin.product.index');
+
+    }
 
 }

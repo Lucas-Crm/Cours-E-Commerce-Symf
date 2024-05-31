@@ -39,10 +39,12 @@ class ProductType extends AbstractType
                 'label' => 'Authenticiter du produit',
                 'attr' => [
                     'class' => 'form-control'
-                ]
+                ],
+                'required'=> false
             ])
             ->add('enable', CheckboxType::class, [
                 'label' => 'Activer le produit',
+                'required'=>false
             ])
             ->add('delivery', EntityType::class, [
                 'class'=> Delivery::class,
