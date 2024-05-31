@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Delivery;
+use App\Entity\Gender;
 use App\Entity\Marque;
+use App\Entity\Model;
 use App\Repository\MarqueRepository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -41,13 +44,46 @@ class ProductType extends AbstractType
             ->add('enable', CheckboxType::class, [
                 'label' => 'Activer le produit',
             ])
-            ->add('marque_id', EntityType::class, [
+            ->add('delivery', EntityType::class, [
+                'class'=> Delivery::class,
+                'query_builder'=> function (EntityRepository $er): QueryBuilder{
+                    return $er->createQueryBuilder('d')
+                        ->andWhere('d.enable = true')
+                        ->orderBy('d.name', 'ASC');
+                },
+                'choice_label'=> 'name',
+                'multiple' => false,
+                'expanded' => false
+            ])
+            ->add('marque', EntityType::class, [
                'class'=> Marque::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder{
                     return $er->createQueryBuilder('m')
                         ->andWhere('m.enable = true')
                         ->orderBy('m.name', 'ASC')
                         ;
+                },
+                'choice_label'=> 'name',
+                'multiple' => false,
+                'expanded' => false
+            ])
+            ->add('model', EntityType::class, [
+                'class'=> Model::class,
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('m')
+                        ->andWhere('m.enable = true')
+                        ->orderBy('m.name', 'ASC');
+                },
+                'choice_label'=> 'name',
+                'multiple' => false,
+                'expanded' => false
+            ])
+            ->add('gender', EntityType::class, [
+                'class'=> Gender::class,
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('g')
+                        ->andWhere('g.enable = true')
+                        ->orderBy('g.name', 'ASC');
                 },
                 'choice_label'=> 'name',
                 'multiple' => false,
