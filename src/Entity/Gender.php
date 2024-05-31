@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EnableTrait;
 use App\Repository\GenderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,8 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GenderRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Gender
 {
+    use EnableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,8 +28,8 @@ class Gender
     #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?bool $enable = null;
+//    #[ORM\Column]
+//    private ?bool $enable = null;
 
     /**
      * @var Collection<int, Product>

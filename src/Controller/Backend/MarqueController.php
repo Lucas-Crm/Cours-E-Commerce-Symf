@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Marque;
 use App\Form\MarqueType;
 use App\Repository\MarqueRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,8 +33,11 @@ class MarqueController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-    public function update(?Marque $marque, Request $request) : RedirectResponse | Response
+    public function update(?Marque $marque, Request $request, ProductRepository $productRepos) : RedirectResponse | Response
     {
+
+        $products = $productRepos->findBy(['marque' => $marque->getId()]);
+
             if(!$marque) {
                 $this->addFlash('error', 'Aucune marque n\'as ete trouver');
                 return $this->redirectToRoute('admin.marque.index');
@@ -52,7 +56,8 @@ class MarqueController extends AbstractController
             }
 
             return $this->render('Backend/marque/update.html.twig', [
-                'form'=>$form
+                'form'=>$form,
+                'products' => $products
             ]);
 
 

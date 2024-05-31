@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Gender;
 use App\Form\GenderType;
 use App\Repository\GenderRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,8 +34,10 @@ class GenderController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'] )]
-    public function update(?Gender $gender, Request $request): Response | RedirectResponse
+    public function update(?Gender $gender, Request $request, ProductRepository $productRepos): Response | RedirectResponse
     {
+
+        $products = $productRepos->findBy(['gender'=> $gender->getId()]);
 
         if(!$gender){
             $this->addFlash('error', 'Aucun gender n\'a ete trouver');
@@ -56,7 +59,7 @@ class GenderController extends AbstractController
 
         return $this->render('backend/gender/update.html.twig', [
             'form' => $form,
-            'gender' => $gender
+            'products'=> $products
     ]);
 
     }
@@ -90,14 +93,10 @@ class GenderController extends AbstractController
 
         $gender = new Gender();
 
-        $form = $this->createForm(GenderType::class);
+        $form = $this->createForm(GenderType::class, $gender);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-
-            $gender
-                ->setName($form->get('name')->getData())
-                ->setEnable($form->get('enable')->getData());
             $this->em->persist($gender);
             $this->em->flush();
 

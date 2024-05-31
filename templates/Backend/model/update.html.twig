@@ -18,6 +18,12 @@
 
             {{ form_end(form) }}
         </div>
+        <h2>Produit liee a cet model :</h2>
+        {% for product in products %}
+            <a class="btn btn-primary" href="{{ path('admin.product.update', {id: product.id}) }}">{{ product.name }}</a>
+            <hr>
+        {% endfor %}
+
     </section>
 
 {% endblock %}

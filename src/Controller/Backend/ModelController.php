@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Model;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,8 +34,10 @@ class ModelController extends AbstractController
     }
 
     #[Route('/{id}/update', name: '.update', methods: ['GET', 'POST'])]
-    public function update(?Model $model, Request $request): Response | RedirectResponse
+    public function update(?Model $model, Request $request, ProductRepository $productRepos): Response | RedirectResponse
     {
+
+        $products = $productRepos->findBy(['model'=>$model->getId()]);
 
         if(!$model){
             $this->addFlash('error', 'Aucun model trouver');
@@ -55,7 +58,8 @@ class ModelController extends AbstractController
         }
 
         return $this->render('Backend/model/update.html.twig', [
-           'form' => $form
+           'form' => $form,
+            'products'=>$products
         ]);
 
     }
@@ -90,15 +94,10 @@ class ModelController extends AbstractController
 
         $model = new Model();
 
-        $form = $this->createForm(ModelType::class);
+        $form = $this->createForm(ModelType::class, $model);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-
-            $model
-                ->setName($form->get('name')->getData())
-                ->setEnable($form->get('enable')->getData());
-
             $this->em->persist($model);
             $this->em->flush();
 
