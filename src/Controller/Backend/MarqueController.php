@@ -86,32 +86,10 @@ class MarqueController extends AbstractController
 
     }
 
-//    #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
-//    public function create(Request $request): RedirectResponse | Response
-//    {
-//
-//        $marque = new Marque();
-//        $form = $this->createForm(MarqueType::class, $marque);
-//        $form->handleRequest($request);
-//
-//        if($form->isSubmitted() && $form->isValid()){
-//            $this->em->persist($marque);
-//            $this->em->flush();
-//
-//            $this->addFlash('success', 'Une marque a bien ete cree');
-//
-//            return $this->redirectToRoute('admin.marque.index');
-//        }
-//
-//        return $this->render('Backend/marque/index.html.twig', [
-//            'form'=>$form
-//        ]);
-//
-//
-//    }
     #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
     public function create(Request $request): RedirectResponse | Response
     {
+
         $marque = new Marque();
         $form = $this->createForm(MarqueType::class, $marque);
         $form->handleRequest($request);
@@ -126,8 +104,7 @@ class MarqueController extends AbstractController
         }
 
         return $this->render('Backend/marque/create.html.twig', [
-            'form' => $form
+            'form'=>$form
         ]);
     }
-
 }

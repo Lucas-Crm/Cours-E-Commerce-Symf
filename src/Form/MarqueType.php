@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,9 +21,16 @@ class MarqueType extends AbstractType
                     'class'=> 'form-control'
                 ]
             ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description de la marque',
+                'attr' => [
+                  'class' => 'form-control'
+                ],
+                'required' => false
+            ])
             ->add('enable', CheckboxType::class, [
                'label'=>'Activer la marque',
-                'required'=>false
+                'required' => false
         ])
         ;
     }
