@@ -76,7 +76,7 @@ class UserController extends AbstractController
             $this->redirectToRoute('admin.user.index');
         }
 
-        if($this->isCsrfTokenValid('delete'.$user->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('token'))){
         $this->em->remove($user);
         $this->em->flush();
         $this->addFlash('success', 'The user was been deleted');

@@ -26,11 +26,9 @@ class ProductVariantControlller extends AbstractController
     {
 
         $productVariants = $productVariantRepos->findAll();
-        $products = $productRepos->findAll();
 
         return $this->render('Backend/product_variant/index.html.twig', [
             'productVariants' => $productVariants,
-            'products' => $products
         ]);
     }
 
@@ -70,7 +68,7 @@ class ProductVariantControlller extends AbstractController
             return $this->redirectToRoute('admin.productVariant.index');
         }
 
-        if($this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->request->get('token'))){
             $this->em->remove($productVariant);
             $this->em->flush();
 

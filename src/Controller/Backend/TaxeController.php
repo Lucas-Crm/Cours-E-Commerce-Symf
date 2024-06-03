@@ -69,7 +69,7 @@ class TaxeController extends AbstractController
             return $this->redirectToRoute('admin.taxe.index');
         }
 
-        if($this->isCsrfTokenValid('delete' . $taxe->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete' . $taxe->getId(), $request->request->get('token'))){
 
             try {
                 $this->em->remove($taxe);
