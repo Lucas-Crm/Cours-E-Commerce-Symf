@@ -34,10 +34,10 @@ class ProductVariantType extends AbstractType
                 'class' => Taxe::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder{
                     return $er->createQueryBuilder('t')
-                        ->andWhere('t.enable == true')
+                        ->andWhere('t.enable = true')
                         ->orderBy('t.rate', 'ASC');
                 },
-                'choice_label' => 'price',
+                'choice_label' => 'rate',
                 'multiple' => false,
                 'expanded' => false
             ])
@@ -46,7 +46,7 @@ class ProductVariantType extends AbstractType
                 'class' => Product::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder{
                     return $er->createQueryBuilder('p')
-                        ->andWhere('p.enable == true')
+                        ->andWhere('p.enable = true')
                         ->orderBy('p.name', 'ASC');
                 },
                 'choice_label' => 'name',

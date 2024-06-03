@@ -3,18 +3,24 @@
 {% block title %}Hello ProductVariantControlllerController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/lucas/Documents/Site/symfapp/e-commerce/src/Controller/Backend/ProductVariantControlllerController.php</code></li>
-        <li>Your template at <code>/Users/lucas/Documents/Site/symfapp/e-commerce/templates/backend/product_variant_controlller/index.html.twig</code></li>
-    </ul>
-</div>
+    <section class="container">
+        <div>
+            <h1>Index des Products Variants</h1>
+            <a class="btn btn-primary" href="{{ path('admin.productVariant.create') }}">Cree un nouveau product variant</a>
+        </div>
+        <div class="d-flex">
+            {% for productVariant in productVariants %}
+                <div class="card">
+                    <h2>{{ productVariant.product.name }}</h2>
+                    <p> taille: {{ productVariant.size }}</p>
+                    <p>prix: {{ productVariant.price }}</p>
+                    <p>taxe: {{ productVariant.taxe.rate}}</p>
+                    <div class="d-flex">
+                        <a class="btn btn-secondary" href="{{ path('admin.productVariant.update', {id: productVariant.id}) }}">Update</a>
+                        {{ include('Backend/product_variant/_delete.html.twig') }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
