@@ -16,7 +16,7 @@
                 <h2>{{ model.name }}</h2>
                 <p>{{ model.enable ? 'Actif' : 'Pas Actif' }}</p>
                 <p>{{ model.slug }}</p>
-                <p>{{ model.createdAt|format_datetime('full', 'none') }}</p>
+                <p>{{ model.createdAt|format_datetime('full','none') }}</p>
                 <div class="d-flex">
                     <a class="btn btn-secondary" href="{{ path('admin.model.update', {id: model.id}) }}">Update</a>
                     {{ include('Backend/model/_delete.html.twig') }}
