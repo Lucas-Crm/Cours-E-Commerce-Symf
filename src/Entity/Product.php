@@ -6,6 +6,8 @@ use App\Entity\Traits\DateTimeTrait;
 use App\Entity\Traits\EnableTrait;
 use App\Entity\Traits\SlugableTrait;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,6 +49,17 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     private ?Gender $gender = null;
+
+    /**
+     * @var Collection<int, ProductVariant>
+     */
+    #[ORM\OneToMany(targetEntity: ProductVariant::class, mappedBy: 'product')]
+    private Collection $productVariants;
+
+    public function __construct()
+    {
+        $this->productVariants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +134,36 @@ class Product
     public function setGender(?Gender $gender): static
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductVariant>
+     */
+    public function getProductVariants(): Collection
+    {
+        return $this->productVariants;
+    }
+
+    public function addProductVariant(ProductVariant $productVariant): static
+    {
+        if (!$this->productVariants->contains($productVariant)) {
+            $this->productVariants->add($productVariant);
+            $productVariant->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductVariant(ProductVariant $productVariant): static
+    {
+        if ($this->productVariants->removeElement($productVariant)) {
+            // set the owning side to null (unless already changed)
+            if ($productVariant->getProduct() === $this) {
+                $productVariant->setProduct(null);
+            }
+        }
 
         return $this;
     }
