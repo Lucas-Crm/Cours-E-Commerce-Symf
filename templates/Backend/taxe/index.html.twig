@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Index Taxe
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <div>
+            <h1>Index des Taxes</h1>
+            <a class="btn btn-primary" href="{{ path('admin.taxe.create') }}">Cree une nouvelle taxe</a>
+        </div>
+
+        <div class="d-flex">
+            {% for taxe in taxes %}
+                <div class="card">
+                    <h2>{{ taxe.name ?  taxe.name : 'Taxe' }}</h2>
+                    <p>{{ taxe.rate }}</p>
+                    <p>{{ taxe.enable ? 'Actif' : 'Pas Actif' }}</p>
+                    <div class="d-flex">
+                        <a class="btn btn-secondary" href="{{ path('admin.taxe.update', {id: taxe.id}) }}">Update</a>
+                        {{ include('Backend/taxe/_delete.html.twig') }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+{% endblock %}

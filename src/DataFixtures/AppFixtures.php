@@ -6,6 +6,7 @@ use App\Entity\Delivery;
 use App\Entity\Gender;
 use App\Entity\Marque;
 use App\Entity\Model;
+use App\Entity\Taxe;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -91,7 +92,16 @@ class AppFixtures extends Fixture
                 ->setEnable(true);
 
             $manager->persist($delivery);
+        }
 
+        //Fixtures Taxe
+        for($i = 0; $i < 5; $i++){
+            $taxe = (new Taxe)
+                ->setName('Taxe-' . $i)
+                ->setRate($i)
+                ->setEnable(true);
+
+            $manager->persist($taxe);
         }
 
         $manager->flush();
