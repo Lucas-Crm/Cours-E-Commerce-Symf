@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block body %}
-
     <section class="container">
         <div>
             <h1>Update Product</h1>
@@ -14,9 +13,9 @@
         </div>
         <div>
             {{ form_start(form) }}
-            <input type="submit" value="Update">
+                {{ form_widget(form) }}
+            <input class="btn btn-secondary" type="submit" value="Update">
             {{ form_end(form) }}
         </div>
     </section>
-
 {% endblock %}
