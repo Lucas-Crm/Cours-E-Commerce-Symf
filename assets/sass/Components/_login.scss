@@ -1,6 +1,6 @@
 .login-register {
   text-align: center;
-  color: #6c757d;
+  color: #a1a1a1;
     a {
       text-decoration: underline;
     }
@@ -9,13 +9,14 @@
 .login-label{
   font-size: 1.2rem;
   margin-top: .5rem;
-  color: #6c757d;
+  color: #a1a1a1;
 }
 
 .login-input{
   width: 100%;
   padding: 5px;
-  margin-top: .5rem;
+  margin-top: 0rem;
+  margin-bottom: .4rem;
   border: 1px solid #cfd0d0;
   border-radius: 5px;
 
@@ -35,6 +36,11 @@
 
 .login-form{
   text-align: start;
+  label{
+    font-size: 1.2rem;
+    margin-top: .5rem;
+    color: #a1a1a1;
+  }
 }
 
 .login-title{

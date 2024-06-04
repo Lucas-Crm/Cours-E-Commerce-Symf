@@ -24,7 +24,7 @@ class UserType extends AbstractType
                 'label' => 'Email',
                 'attr' => [
                     'placeholder' => 'Enter your email',
-                    'class' => 'form-control',
+                    'class' => 'login-input',
                     'name'=> '_username'
                 ],
                 'required' => true
@@ -33,7 +33,7 @@ class UserType extends AbstractType
                 'label' => 'Password',
                 'attr' => [
                     'placeholder' => 'Enter your password',
-                    'class' => 'form-control',
+                    'class' => 'login-input',
                     'name'=> '_password'
                 ],
                 'required' => true
@@ -42,14 +42,14 @@ class UserType extends AbstractType
                 'label' => 'First Name',
                 'attr' => [
                     'placeholder'=> 'Enter your first name',
-                    'class'=> 'form-control'
+                    'class'=> 'login-input'
                 ],
                 'required' => false
             ])->add('lastName', TextType::class, [
                 'label' => 'Last Name',
                 'attr' => [
                     'placeholder'=> 'Enter your last name',
-                    'class'=> 'form-control'
+                    'class'=> 'login-input'
                 ],
                 'required' => false
             ])
@@ -57,14 +57,14 @@ class UserType extends AbstractType
                 'label' => 'Enter your phone number',
                 'attr' => [
                     'placeholder'=> 'Enter your phone number',
-                    'class'=> 'form-control'
+                    'class'=> 'login-input'
                 ],
                 'required' => false
             ])->add('birthDate', DateType::class, [
                 'label' => 'Enter your birth date',
                 'attr' => [
                     'placeholder'=> 'Enter your birth date',
-                    'class'=> 'form-control'
+                    'class'=> 'login-input'
                 ],
                 'required' => false
             ]);
@@ -102,7 +102,7 @@ class UserType extends AbstractType
                             'label' => 'Password',
                             'attr' => [
                                 'placeholder' => 'Enter your password',
-                                'class' => 'form-control',
+                                'class' => 'login-input',
                             ],
                             'constraints' => [
                                 new NotBlank(),
@@ -119,7 +119,7 @@ class UserType extends AbstractType
                             'label' => 'Confirm Password',
                             'attr' => [
                                 'placeholder' => 'Confirm your password',
-                                'class' => 'form-control',
+                                'class' => 'login-input',
                             ],
                         ],
                         'mapped' => false,
