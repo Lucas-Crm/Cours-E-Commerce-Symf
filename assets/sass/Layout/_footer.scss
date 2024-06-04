@@ -1,0 +1,54 @@
+.footer{
+    background-color: $color-secondary;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    a{
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .mail-icon{
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        i{
+            border: 1px solid white;
+            border-radius: 4px;
+            padding: 5px 7px;
+        }
+    }
+
+    .footer-all{
+        display: flex;
+        width: 90%;
+        margin: auto;
+        justify-content: space-between;
+    }
+
+    .footer-section{
+        width: 15%;
+        text-align: start;
+        color: #c4c4c4;
+        a{
+            color: #c4c4c4;
+        }
+        ul{
+            li{
+                margin: .2rem;
+            }
+        }
+        .footer-section-first-text{
+            color: white;
+        }
+    }
+     .ul-logo{
+         display: flex;
+     }
+}
+

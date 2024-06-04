@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Update Product
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <div>
+            <h1>Update Product</h1>
+            <a href="{{ path('admin.product.index') }}">Retour a la liste des produit</a>
+        </div>
+        <div>
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            <input class="btn btn-secondary" type="submit" value="Update">
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

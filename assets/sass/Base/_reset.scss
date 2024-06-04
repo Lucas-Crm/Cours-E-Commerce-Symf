@@ -1,0 +1,50 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+// List
+ul, ol {
+}
+// Headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+}
+// Anchors
+a{
+  text-decoration: none;
+  color: inherit;
+  display: inline-block; transition: color 0.3s ease-in;
+}
+// Forms
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  appearance: none;
+  background: transparent;
+  border-radius: 0;
+}
+// Tables
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+// img
+img,
+video,
+figure {
+  max-width: 100%;
+  object-fit: cover;
+}

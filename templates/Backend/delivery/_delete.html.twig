@@ -1,0 +1,4 @@
+<form method="POST" action="{{ path('admin.delivery.delete', {id: delivery.id}) }}" onsubmit="return confirm('es tu sur de vouloir supprimer la Delivery : {{ delivery.name }}')"  >
+    <input type="hidden" name="token" value="{{ csrf_token('delete' ~ delivery.id) }}">
+    <input class="btn btn-primary" type="submit" value="Delete">
+</form>

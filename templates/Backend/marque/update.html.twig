@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Update Marque
+    {{ parent() }}
+{% endblock %}
+
+
+{% block body %}
+
+    <section class="container">
+        <div class="form-group">
+            {{ form_start(form) }}
+
+            <input type="submit" value="Update" class="btn btn-secondary">
+
+            {{ form_end(form) }}
+        </div>
+
+        <h2>Produit liee a cette marque :</h2>
+        {% for product in products %}
+            <a class="btn btn-primary" href="{{ path('admin.product.update', {id: product.id}) }}">{{ product.name }}</a>
+            <hr>
+        {% endfor %}
+
+    </section>
+
+{% endblock %}

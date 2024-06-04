@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    User Create
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <div class="mx-auto w-30 login">
+                <h1 class="login-title">S'inscrire</h1>
+                <p>Créez-vous un compte pour commencer à faire votre collection de Sneakers</p>
+            <div class="login-form mt-5">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input class="login-btn btn-secondary" type="submit" value="Se connecter">
+                {{ form_end(form) }}
+            </div>
+            <p class=" login-register" >Déja un compte ? <a href="{{ path('app.login') }}">Connectez-vous</a></p>
+        </div>
+    </section>
+
+{% endblock %}

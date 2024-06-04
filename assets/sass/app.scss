@@ -1,0 +1,32 @@
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap-reboot";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
+
+// Form
+@import "~bootstrap/scss/forms";
+
+//import de abstract
+@import 'Abstract/variables';
+//import de base
+//@import 'Base/reset';
+@import "Base/base";
+
+@import 'Layout/navbar';
+@import 'Layout/footer';
+
+@import 'components/login';
+@import 'Components/utils';
+@import 'Components/button';
+@import 'Components/card';
+//import
+//import
+//import
+//import

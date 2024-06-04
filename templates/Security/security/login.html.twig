@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Login
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="container " >
+        <div class="mx-auto w-25 login">
+            <h1 class="login-title">Connexion</h1>
+            <p>Entrez votre email et votre mot de passe pour continuer</p>
+            <div class="login-form mt-5 ">
+                <form action="{{ path('app.login') }}" method="post">
+                    <div>
+                        <label class="login-label" for="username">Email:</label>
+                        <input class="login-input" type="text" id="username" name="_username" value="{{ last_email }}" placeholder="email@domain.com">
+                    </div>
+                    <div>
+                        <label class="login-label" for="password">Password:</label>
+                        <input class="login-input" type="password" id="password" name="_password" placeholder="*****">
+                    </div>
+                    <div>
+                        <button class=" login-btn btn-secondary" type="submit">Se connecter</button>
+                    </div>
+                </form>
+                <p class="login-register" >Pas encore de compte ? <a href="{{ path('app.register') }}">Créez en un</a></p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

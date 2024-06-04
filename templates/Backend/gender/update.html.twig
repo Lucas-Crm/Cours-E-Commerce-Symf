@@ -1,0 +1,28 @@
+{%extends 'base.html.twig' %}
+
+{% block title %}
+    Update Gender
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<section class="container">
+    <h1>Update Gender</h1>
+    <a class=" btn btn-primary" href="{{ path('admin.gender.index') }}">Retour a la liste des gender</a>
+
+    {{ form_start(form) }}
+     <input class="btn btn-secondary" type="submit" value="Update">
+    {{ form_end(form) }}
+    <br>
+
+    <h2>Produit liee a ce Gender</h2>
+
+    {% for product in products %}
+        <a class="btn btn-primary" href="{{ path('admin.product.update', {id: product.id}) }}">{{ product.name }}</a>
+        <hr>
+    {% endfor %}
+
+</section>
+
+
+{% endblock %}

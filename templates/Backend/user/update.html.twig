@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    User
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ user.firstName }}</h1>
+    <section class="container">
+        {{ form_start(form) }}
+
+        <input class="btn btn-secondary" type="submit" value="Update">
+        {{ form_end(form) }}
+    </section>
+
+{% endblock %}

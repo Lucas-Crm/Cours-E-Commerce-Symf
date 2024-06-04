@@ -1,0 +1,32 @@
+body, html {
+  scroll-behavior: smooth;
+}
+html {
+  position: relative;
+  // Imbrication
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5%;
+    right: 5%;
+    pointer-events: none;
+
+    body {
+      background: $primary; // Utilisation de map-get pour récupérer la couleur
+      color: $text-color;
+    }
+  }
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
