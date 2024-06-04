@@ -8,6 +8,7 @@
 @import "~bootstrap/scss/dropdown";
 @import "~bootstrap/scss/alert";
 @import "~bootstrap/scss/pagination";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
 
 // Form
 @import "~bootstrap/scss/forms";
@@ -19,7 +20,9 @@
 @import "Base/base";
 
 @import 'Layout/navbar';
+@import 'Layout/footer';
 
+@import 'components/login';
 @import 'Components/utils';
 @import 'Components/button';
 @import 'Components/card';
