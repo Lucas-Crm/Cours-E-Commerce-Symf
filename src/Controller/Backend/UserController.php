@@ -10,9 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 #[Route('/admin/user', name: 'admin.user')]
 class UserController extends AbstractController
@@ -67,22 +67,20 @@ class UserController extends AbstractController
 
     }
 
+    #[IsCsrfTokenValid(new Expression('"delete" ~ args["user"].getId()'), tokenKey: 'token')]
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
     public function delete(?User $user, Request $request): RedirectResponse
     {
+
         if(!$user){
             $this->addFlash('error', 'No user was found');
-
-            $this->redirectToRoute('admin.user.index');
+            return $this->redirectToRoute('admin.user.index');
         }
 
-        if($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('token'))){
         $this->em->remove($user);
         $this->em->flush();
-        $this->addFlash('success', 'The user was been deleted');
 
-        }
-
+        $this->addFlash('success', 'User was deleted');
 
         return $this->redirectToRoute('admin.user.index');
     }
