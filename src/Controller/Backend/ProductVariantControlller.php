@@ -6,6 +6,7 @@ use App\Entity\ProductVariant;
 use App\Form\ProductVariantType;
 use App\Repository\ProductRepository;
 use App\Repository\ProductVariantRepository;
+use App\Services\MyCustomFunction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,7 +19,8 @@ class ProductVariantControlller extends AbstractController
 {
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private MyCustomFunction $MyCustomFunction,
     ){}
 
     #[Route('/', name: '.index', methods: ['GET'])]
@@ -36,22 +38,30 @@ class ProductVariantControlller extends AbstractController
     public function update(?ProductVariant $productVariant, Request $request): Response | RedirectResponse
     {
 
-        if(!$productVariant){
-            $this->addFlash('error', 'Aucun product variant n\'as ete trouve' );
+        if($this->MyCustomFunction->isEntityExist($productVariant)){
             return $this->redirectToRoute('admin.productVariant.index');
         }
+//
+//        if(!$productVariant){
+//            $this->addFlash('error', 'Aucun product variant n\'as ete trouve' );
+//            return $this->redirectToRoute('admin.productVariant.index');
+//        }
 
         $form = $this->createForm(ProductVariantType::class, $productVariant);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($productVariant);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le product variant a bien ete ajouter');
-
+        if($this->MyCustomFunction->isFormOk($form, $productVariant)){
             return $this->redirectToRoute('admin.productVariant.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($productVariant);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le product variant a bien ete ajouter');
+//
+//            return $this->redirectToRoute('admin.productVariant.index');
+//        }
 
 
         return $this->render('Backend/product_variant/update.html.twig', [
@@ -63,19 +73,29 @@ class ProductVariantControlller extends AbstractController
     public function delete(?ProductVariant $productVariant, Request $request): RedirectResponse
     {
 
-        if(!$productVariant){
-            $this->addFlash('error', 'Aucun proudct variant trouver');
+        if($this->MyCustomFunction->isEntityExist($productVariant)){
             return $this->redirectToRoute('admin.productVariant.index');
         }
 
-        if($this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->request->get('token'))){
-            $this->em->remove($productVariant);
-            $this->em->flush();
+//        if(!$productVariant){
+//            $this->addFlash('error', 'Aucun proudct variant trouver');
+//            return $this->redirectToRoute('admin.productVariant.index');
+//        }
 
-            $this->addFlash('success', 'Le product variant a bien ete supprimer');
-        } elseif (!$this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->get('token'))){
-            $this->addFlash('error', 'Mauvais token CSRF');
+
+        if($this->MyCustomFunction->isCsrfTokenOK($productVariant, $request)) {
+            return $this->redirectToRoute('admin.productVariant.index');
         }
+
+//        if($this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->request->get('token'))){
+//            $this->em->remove($productVariant);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le product variant a bien ete supprimer');
+//        } elseif (!$this->isCsrfTokenValid('delete' . $productVariant->getId(), $request->get('token'))){
+//            $this->addFlash('error', 'Mauvais token CSRF');
+//        }
+
             return $this->redirectToRoute('admin.productVariant.index');
     }
 
@@ -87,13 +107,17 @@ class ProductVariantControlller extends AbstractController
         $form = $this->createForm(ProductVariantType::class, $productVariant);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($productVariant);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le product variant a bien ete ajouter');
+        if($this->MyCustomFunction->isFormOk($form, $productVariant)){
             return $this->redirectToRoute('admin.productVariant.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($productVariant);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le product variant a bien ete ajouter');
+//            return $this->redirectToRoute('admin.productVariant.index');
+//        }
 
         return $this->render('Backend/product_variant/create.html.twig', [
             'form' => $form

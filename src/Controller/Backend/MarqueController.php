@@ -6,6 +6,7 @@ use App\Entity\Marque;
 use App\Form\MarqueType;
 use App\Repository\MarqueRepository;
 use App\Repository\ProductRepository;
+use App\Services\MyCustomFunction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,7 +19,8 @@ class MarqueController extends AbstractController
 {
 
     public function __construct(
-     private EntityManagerInterface $em
+     private EntityManagerInterface $em,
+     private MyCustomFunction $MyCustomFunction,
     )
     {}
     #[Route('/', name: '.index', methods: ['GET'])]
@@ -36,24 +38,34 @@ class MarqueController extends AbstractController
     public function update(?Marque $marque, Request $request, ProductRepository $productRepos) : RedirectResponse | Response
     {
 
-        $products = $productRepos->findBy(['marque' => $marque->getId()]);
-
-            if(!$marque) {
-                $this->addFlash('error', 'Aucune marque n\'as ete trouver');
+            //Function custom pour verifier si la marque exist
+            if ($this->MyCustomFunction->isEntityExist($marque)){
                 return $this->redirectToRoute('admin.marque.index');
             }
+
+//            if(!$marque) {
+//                $this->addFlash('error', 'Aucune marque n\'as ete trouver');
+//                return $this->redirectToRoute('admin.marque.index');
+//            }
+
+            $products = $productRepos->findBy(['marque' => $marque->getId()]);
 
             $form = $this->createForm(MarqueType::class, $marque);
             $form->handleRequest($request);
 
-            if($form->isSubmitted() && $form->isValid()) {
-                $this->em->persist($marque);
-                $this->em->flush();
-
-                $this->addFlash('success', 'La marque a bien ete modifier');
-
+            //Function custom pour verifier si le form est ok
+            if($this->MyCustomFunction->isFormOk($form, $marque)){
                 return $this->redirectToRoute('admin.marque.index');
             }
+
+//            if($form->isSubmitted() && $form->isValid()) {
+//                $this->em->persist($marque);
+//                $this->em->flush();
+//
+//                $this->addFlash('success', 'La marque a bien ete modifier');
+//
+//                return $this->redirectToRoute('admin.marque.index');
+//            }
 
             return $this->render('Backend/marque/update.html.twig', [
                 'form'=>$form,
@@ -68,26 +80,37 @@ class MarqueController extends AbstractController
     public function delete(?Marque $marque, Request $request): RedirectResponse
     {
 
-        if(!$marque){
-            $this->addFlash('error', 'Aucune marque trouver');
+        //Function custom pour verifier si la marque exist
+        if ($this->MyCustomFunction->isEntityExist($marque)){
+            return $this->redirectToRoute('admin.marque.index');
+        }
+
+//        if(!$marque){
+//            $this->addFlash('error', 'Aucune marque trouver');
+//            return $this->redirectToRoute('admin.marque.index');
+//        }
+
+
+        //Function custom pour verifier le token CSRF et delete
+        if($this->MyCustomFunction->isCsrfTokenOK($marque, $request)){
             return $this->redirectToRoute('admin.marque.index');
         }
 
 
-        if($this->isCsrfTokenValid('delete'. $marque->getId(), $request->request->get('token'))){
-            try {
-                $this->em->remove($marque);
-                $this->em->flush();
+//        if($this->isCsrfTokenValid('delete'. $marque->getId(), $request->request->get('token'))){
+//            try {
+//                $this->em->remove($marque);
+//                $this->em->flush();
+//
+//                $this->addFlash('success', 'La marque a bien été supprimée');
+//            } catch (\Exception $e) {
+//                $this->addFlash('error', 'Cette marque est liée à des produits et ne peut pas être supprimée');
+//            }
+//        } elseif (!$this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
+//            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
+//        }
 
-                $this->addFlash('success', 'La marque a bien été supprimée');
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Cette marque est liée à des produits et ne peut pas être supprimée');
-            }
-        } elseif (!$this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
-            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
-        }
-
-            return $this->redirectToRoute('admin.marque.index');
+//            return $this->redirectToRoute('admin.marque.index');
 
 
 
@@ -101,14 +124,19 @@ class MarqueController extends AbstractController
         $form = $this->createForm(MarqueType::class, $marque);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($marque);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Une marque a bien ete cree');
-
+        //Function custom pour verifier le form
+        if($this->MyCustomFunction->isFormOk($form, $marque)){
             return $this->redirectToRoute('admin.marque.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($marque);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Une marque a bien ete cree');
+//
+//            return $this->redirectToRoute('admin.marque.index');
+//        }
 
         return $this->render('Backend/marque/create.html.twig', [
             'form'=>$form

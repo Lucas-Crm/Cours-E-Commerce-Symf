@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Services\MyCustomFunction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +18,8 @@ class ProductController extends AbstractController
 {
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private MyCustomFunction $MyCustomFunction,
     )
     {}
 
@@ -36,22 +38,30 @@ class ProductController extends AbstractController
     public function update(Request $request, ?Product $product): Response | RedirectResponse
     {
 
-        if(!$product){
-            $this->addFlash('error', 'Aucun produit n\'as ete trouver');
+        if($this->MyCustomFunction->isEntityExist($product)){
             return $this->redirectToRoute('admin.product.index');
         }
+//
+//        if(!$product){
+//            $this->addFlash('error', 'Aucun produit n\'as ete trouver');
+//            return $this->redirectToRoute('admin.product.index');
+//        }
 
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($product);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le produit a bien ete modifier');
-
+        if($this->MyCustomFunction->isFormOk($form, $product)){
             return $this->redirectToRoute('admin.product.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($product);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le produit a bien ete modifier');
+//
+//            return $this->redirectToRoute('admin.product.index');
+//        }
 
 
         return $this->render('Backend/product/update.html.twig', [
@@ -67,15 +77,19 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
-            $this->em->persist($product);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le produit a bien ete ajouter');
-
+        if($this->MyCustomFunction->isFormOk($form, $product)){
             return $this->redirectToRoute('admin.product.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//
+//            $this->em->persist($product);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le produit a bien ete ajouter');
+//
+//            return $this->redirectToRoute('admin.product.index');
+//        }
 
         return $this->render('Backend/product/create.html.twig', [
             'form' => $form
@@ -86,21 +100,29 @@ class ProductController extends AbstractController
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
     public function delete(?Product $product, Request $request){
 
-        if(!$product){
-            $this->addFlash('error', 'Aucun produit trouver');
+        if($this->MyCustomFunction->isEntityExist($product)){
             return $this->redirectToRoute('admin.product.index');
         }
 
-        if($this->isCsrfTokenValid('delete'. $product->getId(), $request->request->get('token'))){
-            $this->em->remove($product);
-            $this->em->flush();
+//        if(!$product){
+//            $this->addFlash('error', 'Aucun produit trouver');
+//            return $this->redirectToRoute('admin.product.index');
+//        }
 
-            $this->addFlash('success', 'le produit a bien ete supprimer');
 
-
-        } elseif (!$this->isCsrfTokenValid('delete'. $product->getId(), $request->get('token'))){
-            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
+        if($this->MyCustomFunction->isCsrfTokenOK($product, $request)){
+            return $this->redirectToRoute('admin.product.index');
         }
+
+//        if($this->isCsrfTokenValid('delete'. $product->getId(), $request->request->get('token'))){
+//            $this->em->remove($product);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'le produit a bien ete supprimer');
+//
+//        } elseif (!$this->isCsrfTokenValid('delete'. $product->getId(), $request->get('token'))){
+//            $this->addFlash('error', 'Le token CSRF n\'est pas valide');
+//        }
 
             return $this->redirectToRoute('admin.product.index');
 

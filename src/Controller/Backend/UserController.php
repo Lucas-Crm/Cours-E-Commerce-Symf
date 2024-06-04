@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Services\MyCustomFunction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,13 +20,13 @@ class UserController extends AbstractController
 {
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private MyCustomFunction $MyCustomFunction,
     ){}
 
     #[Route('/', name: '.index', methods: ['GET'])]
     public function index(UserRepository $userRepos): Response
     {
-
 
         $users = $userRepos->findAll();
 
@@ -38,10 +39,14 @@ class UserController extends AbstractController
     public function update(?User $user, Request $request): RedirectResponse | Response
     {
 
-        if(!$user){
-            $this->addFlash('error', 'UNF');
+        if($this->MyCustomFunction->isEntityExist($user)){
             return $this->redirectToRoute('admin.user.index');
         }
+
+//        if(!$user){
+//            $this->addFlash('error', 'UNF');
+//            return $this->redirectToRoute('admin.user.index');
+//        }
 
         $form = $this->createForm(UserType::class, $user, [
             'isAdmin'=>true
@@ -50,15 +55,19 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($user);
-            $this->em->flush();
+        if($this->MyCustomFunction->isFormOk($form, $user)){
+            return $this->redirectToRoute('admin.user.index');
+        }
 
-            $this->addFlash('success', 'UBU');
-
-           return $this->redirectToRoute('admin.user.index');
-
-        };
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($user);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'UBU');
+//
+//           return $this->redirectToRoute('admin.user.index');
+//
+//        };
 
         return $this->render('backend/user/update.html.twig', [
             'user' => $user,
@@ -72,10 +81,14 @@ class UserController extends AbstractController
     public function delete(?User $user, Request $request): RedirectResponse
     {
 
-        if(!$user){
-            $this->addFlash('error', 'No user was found');
+        if($this->MyCustomFunction->isEntityExist($user)){
             return $this->redirectToRoute('admin.user.index');
         }
+
+//        if(!$user){
+//            $this->addFlash('error', 'No user was found');
+//            return $this->redirectToRoute('admin.user.index');
+//        }
 
         $this->em->remove($user);
         $this->em->flush();

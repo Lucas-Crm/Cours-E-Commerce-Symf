@@ -8,6 +8,7 @@
     width: 100%;
     z-index: 1000;
     display: flex;
+    flex-wrap: wrap;
     a{
         color: #fff;
         text-decoration: none;
@@ -16,6 +17,11 @@
     .mail-icon{
         font-size: 1.5rem;
         margin-right: 1rem;
+        i{
+            border: 1px solid white;
+            border-radius: 4px;
+            padding: 5px 7px;
+        }
     }
 
     .footer-all{

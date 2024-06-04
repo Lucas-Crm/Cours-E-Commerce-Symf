@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Taxe;
 use App\Form\TaxeType;
 use App\Repository\TaxeRepository;
+use App\Services\MyCustomFunction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +18,8 @@ class TaxeController extends AbstractController
 {
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private MyCustomFunction $MyCustomFunction,
     ){}
 
 
@@ -36,23 +38,30 @@ class TaxeController extends AbstractController
     public function update(?Taxe $taxe, Request $request): Response | RedirectResponse
     {
 
-        if(!$taxe){
-            $this->addFlash('error', 'Aucune taxe n\'as ete trouver');
-
+        if($this->MyCustomFunction->isEntityExist($taxe)){
             return $this->redirectToRoute('admin.taxe.index');
         }
+
+//        if(!$taxe){
+//            $this->addFlash('error', 'Aucune taxe n\'as ete trouver');
+//            return $this->redirectToRoute('admin.taxe.index');
+//        }
 
         $form = $this->createForm(TaxeType::class, $taxe);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($taxe);
-            $this->em->flush();
 
-            $this->addFlash('success', 'La taxe a bien ete modifier');
+        if($this->MyCustomFunction->isFormOk($form, $taxe)){
             return $this->redirectToRoute('admin.taxe.index');
         }
 
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($taxe);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'La taxe a bien ete modifier');
+//            return $this->redirectToRoute('admin.taxe.index');
+//        }
 
         return $this->render('Backend/taxe/update.html.twig', [
             'form' => $form
@@ -64,28 +73,35 @@ class TaxeController extends AbstractController
     public function delete(?Taxe $taxe, Request $request)
     {
 
-        if(!$taxe){
-            $this->addFlash('error', 'Aucune taxe trouver');
+        if($this->MyCustomFunction->isEntityExist($taxe)){
             return $this->redirectToRoute('admin.taxe.index');
         }
 
-        if($this->isCsrfTokenValid('delete' . $taxe->getId(), $request->request->get('token'))){
+//        if(!$taxe){
+//            $this->addFlash('error', 'Aucune taxe trouver');
+//            return $this->redirectToRoute('admin.taxe.index');
+//        }
 
-            try {
-                $this->em->remove($taxe);
-                $this->em->flush();
-
-                $this->addFlash('success', 'La taxe a bien ete supprimer');
-            } catch (\Exception $e){
-                $this->addFlash('error', 'La Taxe na pas ete supprimer');
-            }
-
-        } elseif (!$this->isCsrfTokenValid('delete' . $taxe->getId(), $request->get('token'))) {
-            $this->addFlash('error', 'Mauvais token CSRF');
+        if($this->MyCustomFunction->isCsrfTokenOK($taxe, $request)) {
+            return $this->redirectToRoute('admin.taxe.index');
         }
 
-        return $this->redirectToRoute('admin.taxe.index');
+//        if($this->isCsrfTokenValid('delete' . $taxe->getId(), $request->request->get('token'))){
+//
+//            try {
+//                $this->em->remove($taxe);
+//                $this->em->flush();
+//
+//                $this->addFlash('success', 'La taxe a bien ete supprimer');
+//            } catch (\Exception $e){
+//                $this->addFlash('error', 'La Taxe na pas ete supprimer');
+//            }
+//
+//        } elseif (!$this->isCsrfTokenValid('delete' . $taxe->getId(), $request->get('token'))) {
+//            $this->addFlash('error', 'Mauvais token CSRF');
+//        }
 
+        return $this->redirectToRoute('admin.taxe.index');
 
     }
 
@@ -98,14 +114,18 @@ class TaxeController extends AbstractController
         $form = $this->createForm(TaxeType::class, $taxe);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($taxe);
-            $this->em->flush();
-
-            $this->addFlash('success', 'La taxe a bien ete ajouter');
-
+        if($this->MyCustomFunction->isFormOk($form, $taxe)){
             return $this->redirectToRoute('admin.taxe.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($taxe);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'La taxe a bien ete ajouter');
+//
+//            return $this->redirectToRoute('admin.taxe.index');
+//        }
 
         return $this->render('Backend/taxe/create.html.twig', [
             'form' => $form
