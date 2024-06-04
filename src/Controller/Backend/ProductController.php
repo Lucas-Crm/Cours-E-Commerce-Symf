@@ -91,7 +91,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('admin.product.index');
         }
 
-        if($this->isCsrfTokenValid('delete'. $product->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete'. $product->getId(), $request->request->get('token'))){
             $this->em->remove($product);
             $this->em->flush();
 

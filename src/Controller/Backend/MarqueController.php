@@ -74,7 +74,7 @@ class MarqueController extends AbstractController
         }
 
 
-        if($this->isCsrfTokenValid('delete'. $marque->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete'. $marque->getId(), $request->request->get('token'))){
             try {
                 $this->em->remove($marque);
                 $this->em->flush();

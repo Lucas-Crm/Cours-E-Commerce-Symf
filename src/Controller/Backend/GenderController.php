@@ -73,7 +73,7 @@ class GenderController extends AbstractController
             return $this->redirectToRoute('admin.gender.index');
         }
 
-        if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->get('token'))){
+        if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->request->get('token'))){
             try {
                 $this->em->remove($gender);
                 $this->em->flush();

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Create Product Variant
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="container">
+        <div>
+            <h1>Update Product Variant</h1>
+            <a href="{{ path('admin.productVariant.index') }}">Retour a la listes des products Variants</a>
+        </div>
+
+        <div>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input class="btn btn-secondary" type="submit" value="Update">
+            {{ form_end(form) }}
+        </div>
+
+    </section>
+
+{% endblock %}

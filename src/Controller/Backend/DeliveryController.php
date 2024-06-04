@@ -70,7 +70,7 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin.delivery.index');
     }
 
-    if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
+    if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->request->get('token'))){
 
         try {
             $this->em->remove($delivery);
