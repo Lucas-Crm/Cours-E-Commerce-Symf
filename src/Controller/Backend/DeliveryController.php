@@ -8,6 +8,7 @@ use App\Repository\DeliveryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -36,12 +37,13 @@ class DeliveryController extends AbstractController
     public function update(?Delivery $delivery, Request $request, ProductRepository $productRepos)
     {
 
-        $products = $productRepos->findBy(['delivery' => $delivery->getId()]);
 
         if(!$delivery){
             $this->addFlash('error', 'Aucun delivery trouver');
             return $this->redirectToRoute('admin.delivery.index');
         }
+
+        $products = $productRepos->findBy(['delivery' => $delivery->getId()]);
 
         $form = $this->createForm(DeliveryType::class, $delivery);
         $form->handleRequest($request);
@@ -62,38 +64,35 @@ class DeliveryController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
-    public function delete(?Delivery $delivery, Request $request){
+    public function delete(?Delivery $delivery, Request $request): RedirectResponse
+    {
 
-    if(!$delivery){
-        $this->addFlash('error', 'Aucune Delivery trouver');
-
-        return $this->redirectToRoute('admin.delivery.index');
-    }
-
-    if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->request->get('token'))){
-
-        try {
-            $this->em->remove($delivery);
-            $this->em->flush();
-
-            $this->addFlash('success', 'La delivery a bien ete supprimer');
-        } catch (\Exception $e){
-            $this->addFlash('success', 'Cette Delivery est liee a un ou plusieur produits et ne peut donc pas etre supprimer');
+        if(!$delivery){
+            $this->addFlash('error', 'Aucune Delivery trouver');
+            return $this->redirectToRoute('admin.delivery.index');
         }
 
-    } elseif (!$this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
-        $this->addFlash('error', 'Mauvais token CSRF');
-    }
-
-    return $this->redirectToRoute('admin.delivery.index');
+        if ($this->isCsrfTokenValid('delete'. $delivery->getId(), $request->request->get('token'))){
+            try {
+                $this->em->remove($delivery);
+                $this->em->flush();
+                $this->addFlash('success', 'La delivery a bien ete supprimer');
+            } catch (\Exception $e){
+                $this->addFlash('success', 'Cette Delivery est liee a un ou plusieur produits et ne peut donc pas etre supprimer');
+            }
+        } elseif (!$this->isCsrfTokenValid('delete'. $delivery->getId(), $request->get('token'))){
+            $this->addFlash('error', 'Mauvais token CSRF');
+        }
+        return $this->redirectToRoute('admin.delivery.index');
 
     }
 
     #[Route('/create', name: '.create', methods: ['GET', 'POST'])]
-    public function create(Request $request)
+    public function create(Request $request): Response | RedirectResponse
     {
 
         $delivery = new Delivery();
+
         $form = $this->createForm(DeliveryType::class, $delivery);
         $form->handleRequest($request);
 

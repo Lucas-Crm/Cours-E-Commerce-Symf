@@ -12,13 +12,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Services\MyCustomFunction;
 
 #[Route('/admin/gender', name: 'admin.gender')]
 class GenderController extends AbstractController
 {
 
+
+
     public function __construct(
-     private EntityManagerInterface $em
+     private EntityManagerInterface $em,
+    private MyCustomFunction $MyCustomFunction,
     )
     {}
 
@@ -37,25 +41,33 @@ class GenderController extends AbstractController
     public function update(?Gender $gender, Request $request, ProductRepository $productRepos): Response | RedirectResponse
     {
 
-        $products = $productRepos->findBy(['gender'=> $gender->getId()]);
-
-        if(!$gender){
-            $this->addFlash('error', 'Aucun gender n\'a ete trouver');
-
+        //Function custom pour verifier si l'entity exist
+        if($this->MyCustomFunction->isEntityExist($gender)){
             return $this->redirectToRoute('admin.gender.index');
         }
+
+//        if(!$gender){
+//            $this->addFlash('error', 'Aucun gender n\'a ete trouver');
+//            return $this->redirectToRoute('admin.gender.index');
+//        }
+
+        $products = $productRepos->findBy(['gender'=> $gender->getId()]);
 
         $form = $this->createForm(GenderType::class, $gender);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($gender);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le gender a bien ete modifier');
-
+        if($this->MyCustomFunction->isFormOk($form, $gender)){
             return $this->redirectToRoute('admin.gender.index');
         }
+
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($gender);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le gender a bien ete modifier');
+//
+//            return $this->redirectToRoute('admin.gender.index');
+//        }
 
         return $this->render('backend/gender/update.html.twig', [
             'form' => $form,
@@ -67,23 +79,32 @@ class GenderController extends AbstractController
     #[Route('/{id}/delete', name: '.delete', methods: ['POST'])]
     public function delete(?Gender $gender, Request $request): RedirectResponse
     {
-        if(!$gender){
-            $this->addFlash('error', 'Aucun gender n\'as ete trouver');
 
+        if($this->MyCustomFunction->isEntityExist($gender)){
             return $this->redirectToRoute('admin.gender.index');
         }
 
-        if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->request->get('token'))){
-            try {
-                $this->em->remove($gender);
-                $this->em->flush();
+//        if(!$gender){
+//            $this->addFlash('error', 'Aucun gender n\'as ete trouver');
+//            return $this->redirectToRoute('admin.gender.index');
+//        }
 
-                $this->addFlash('success', 'Le gender a bien ete supprimer');
-            } catch (\Exception $e){
-                $this->addFlash('success', 'Ce gender est liee a un ou plusieur product et ne peut donc pas etre supprimer');
-            }
-
+        //Function custom pour verifier le token csrf et delete
+        if($this->MyCustomFunction->isCsrfTokenOK($gender, $request)){
+            return $this->redirectToRoute('admin.gender.index');
         }
+
+//        if($this->isCsrfTokenValid('delete'.$gender->getId(), $request->request->get('token'))){
+//            try {
+//                $this->em->remove($gender);
+//                $this->em->flush();
+//
+//                $this->addFlash('success', 'Le gender a bien ete supprimer');
+//            } catch (\Exception $e){
+//                $this->addFlash('success', 'Ce gender est liee a un ou plusieur product et ne peut donc pas etre supprimer');
+//            }
+//
+//        }
         return $this->redirectToRoute('admin.gender.index');
     }
 
@@ -96,14 +117,20 @@ class GenderController extends AbstractController
         $form = $this->createForm(GenderType::class, $gender);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($gender);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Le gender a bien ete cree');
-
+        //Function custom pour verifier si le form est valid
+        if ($this->MyCustomFunction->isFormOk($form, $gender)){
             return $this->redirectToRoute('admin.gender.index');
         }
+
+//
+//        if($form->isSubmitted() && $form->isValid()){
+//            $this->em->persist($gender);
+//            $this->em->flush();
+//
+//            $this->addFlash('success', 'Le gender a bien ete cree');
+//
+//            return $this->redirectToRoute('admin.gender.index');
+//        }
 
         return $this->render('backend/gender/create.html.twig', [
             'form'=>$form
