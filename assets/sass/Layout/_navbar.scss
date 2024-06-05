@@ -97,10 +97,8 @@
 }
 
 .nav-show{
-    background-color: #d90000;
-    .nav-a{
-        color: #fff;
-    }
+  display: flex;
+  justify-content: center;
 }
 
 .nav-hidden{
