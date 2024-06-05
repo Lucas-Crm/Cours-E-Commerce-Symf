@@ -1,8 +1,4 @@
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+
 
 .footer {
     margin-top: auto;
@@ -10,7 +6,7 @@ body {
     color: #fff;
     padding: 20px;
     text-align: center;
-    position: static;
+    position: fixed;
     bottom: 0;
     width: 100%;
     z-index: 1000;
