@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
 
         $lastUserEmail = $authUtils->getLastUsername();
 
-        return $this->render('security/security/login.html.twig', [
+        return $this->render('Security/security/login.html.twig', [
             'last_email' => $lastUserEmail,
             'error' => $error
         ]);
@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->addFlash('success', 'Hey Your Are Now Registered');
+            $this->addFlash('success', 'Bienvenue '.$user->getEmail().', votre compte a ete cree avec succes. Vous pouvez vous connecter des maintenant.');
             
             return $this->redirectToRoute('app.login');
         }
