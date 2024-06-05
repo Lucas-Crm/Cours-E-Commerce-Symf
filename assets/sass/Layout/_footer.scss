@@ -1,54 +1,60 @@
-.footer{
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.footer {
+    margin-top: auto;
     background-color: $color-secondary;
     color: #fff;
     padding: 20px;
     text-align: center;
-    position: fixed;
+    position: static;
     bottom: 0;
     width: 100%;
     z-index: 1000;
     display: flex;
     flex-wrap: wrap;
-    a{
+    a {
         color: #fff;
         text-decoration: none;
     }
 
-    .mail-icon{
+    .mail-icon {
         font-size: 1.5rem;
         margin-right: 1rem;
-        i{
+        i {
             border: 1px solid white;
             border-radius: 4px;
             padding: 5px 7px;
         }
     }
 
-    .footer-all{
+    .footer-all {
         display: flex;
         width: 90%;
         margin: auto;
         justify-content: space-between;
     }
 
-    .footer-section{
+    .footer-section {
         width: 15%;
         text-align: start;
         color: #c4c4c4;
-        a{
+        a {
             color: #c4c4c4;
         }
-        ul{
-            li{
+        ul {
+            li {
                 margin: .2rem;
             }
         }
-        .footer-section-first-text{
+        .footer-section-first-text {
             color: white;
         }
     }
-     .ul-logo{
-         display: flex;
-     }
+    .ul-logo {
+        display: flex;
+    }
 }
-

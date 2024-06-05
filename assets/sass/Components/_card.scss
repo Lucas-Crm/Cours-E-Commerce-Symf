@@ -1,9 +1,16 @@
 .card {
-  border: 1px solid rgba(0,0,0,.125);
   border-radius: $border-radius;
   box-shadow: $box-shadow-default;
   padding: 1.25rem;
-  background-color: #fff;
-  margin: 5px;
+  //background-color: $color-primary;
+  //background-color: white;
+  margin: 10px;
   text-align: center;
+  transition: .3s;
+  //border-left: $color-secondary 3px solid;
+  //border-bottom: $color-secondary 3px solid;
+  border: $color-secondary 3px solid;
+  &:hover {
+    transform: rotate(5deg) scale(1.05);
+  }
 }
