@@ -17,6 +17,7 @@
 {#    TODO: faire une base pour le backend#}
     {{ include('Layout/header.html.twig') }}
         <main>
+            {% include 'Layout/navAdmin.html.twig' %}
             {% include 'Layout/flash.html.twig' %}
             {% block body %}{% endblock %}
         </main>
