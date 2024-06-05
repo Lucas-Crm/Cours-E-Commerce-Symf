@@ -123,7 +123,7 @@ class UserType extends AbstractType
                             ],
                         ],
                         'mapped' => false,
-            ]);
+                    ]);
             }
         ;
     }

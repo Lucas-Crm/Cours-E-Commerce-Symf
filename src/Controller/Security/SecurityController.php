@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -34,7 +35,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app.register', methods: ['GET', 'POST'])]
-    public function register(UserPasswordHasherInterface $hasher, Request $request): Response
+    public function register(UserPasswordHasherInterface $hasher, Request $request): Response | RedirectResponse
     {
 
         $user = new User();
@@ -56,7 +57,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app.login');
         }
 
-        return $this->render('backend/user/create.html.twig', [
+        return $this->render('Security/security/register.html.twig', [
             'form'=>$form
         ]);
 
