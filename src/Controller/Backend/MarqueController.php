@@ -43,11 +43,6 @@ class MarqueController extends AbstractController
                 return $this->redirectToRoute('admin.marque.index');
             }
 
-//            if(!$marque) {
-//                $this->addFlash('error', 'Aucune marque n\'as ete trouver');
-//                return $this->redirectToRoute('admin.marque.index');
-//            }
-
             $products = $productRepos->findBy(['marque' => $marque->getId()]);
 
             $form = $this->createForm(MarqueType::class, $marque);
@@ -57,15 +52,6 @@ class MarqueController extends AbstractController
             if($this->MyCustomFunction->isFormOk($form, $marque)){
                 return $this->redirectToRoute('admin.marque.index');
             }
-
-//            if($form->isSubmitted() && $form->isValid()) {
-//                $this->em->persist($marque);
-//                $this->em->flush();
-//
-//                $this->addFlash('success', 'La marque a bien ete modifier');
-//
-//                return $this->redirectToRoute('admin.marque.index');
-//            }
 
             return $this->render('Backend/marque/update.html.twig', [
                 'form'=>$form,
