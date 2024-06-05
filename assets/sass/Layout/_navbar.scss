@@ -26,7 +26,10 @@
 .nav{
     display: flex;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
     align-items: center;
+    background-color: #fff;
     padding: 1rem 0;
     width: 90%;
     margin: auto;

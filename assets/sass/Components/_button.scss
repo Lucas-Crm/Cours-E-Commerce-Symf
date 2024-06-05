@@ -1,12 +1,12 @@
 .btn{
-    background-color: #f00;
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
-    margin: 5px 0;
+    margin: 5px 5px;
     &:hover{
+        transform: scale(1.1);
         background-color: $black;
     }
     &.btn-primary{
@@ -17,6 +17,6 @@
         background-color: $color-secondary;
     }
     &.btn-danger{
-        background-color: red;
+        background-color: #ff7b7b;
     }
 }
